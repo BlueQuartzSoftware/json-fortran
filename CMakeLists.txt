@@ -134,12 +134,12 @@ if("${BUILD_SHARED_LIBS}" STREQUAL "ON")
 else()
   add_library ( ${LIB_NAME} STATIC ${JF_LIB_SRCS} )
   set_target_properties ( ${LIB_NAME}
-  PROPERTIES
-  OUTPUT_NAME ${LIB_NAME}
-  PREFIX lib
-  VERSION ${VERSION}
-  ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
-  Fortran_MODULE_DIRECTORY ${MODULE_DIR} )
+    PROPERTIES
+    OUTPUT_NAME ${LIB_NAME}
+    PREFIX lib
+    VERSION ${VERSION}
+    ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
+    Fortran_MODULE_DIRECTORY ${MODULE_DIR} )
 endif()
 
 
@@ -345,7 +345,8 @@ endif()
 # Code to  fix the dylib install name on Mac.
 include ( cmake/fixupInstallNameDir.cmake )
 
-install ( DIRECTORY "${MODULE_DIR}/" DESTINATION  "${INSTALL_MOD_DIR}" )
+#install ( DIRECTORY "${MODULE_DIR}/" DESTINATION  "${INSTALL_MOD_DIR}" )
+install (FILES "${MODULE_DIR}/json_module.mod" DESTINATION  "${INSTALL_MOD_DIR}")
 
 #------------------------------------------
 # Add portable unistall command to makefile
