@@ -130,7 +130,8 @@ if("${BUILD_SHARED_LIBS}" STREQUAL "ON")
     SOVERSION ${VERSION_MAJOR}.${VERSION_MINOR}
     VERSION ${VERSION}
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
-    Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR} )
+    Fortran_MODULE_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR} 
+    Fortran_MODULE_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR} )
 else()
   add_library ( ${LIB_NAME} STATIC ${JF_LIB_SRCS} )
   set_target_properties ( ${LIB_NAME}
@@ -139,7 +140,8 @@ else()
     PREFIX lib
     VERSION ${VERSION}
     ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
-    Fortran_MODULE_DIRECTORY ${MODULE_DIR} )
+    Fortran_MODULE_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR} 
+    Fortran_MODULE_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR} )
 endif()
 
 
@@ -346,7 +348,7 @@ endif()
 include ( cmake/fixupInstallNameDir.cmake )
 
 #install ( DIRECTORY "${MODULE_DIR}/" DESTINATION  "${INSTALL_MOD_DIR}" )
-install (FILES "${MODULE_DIR}/json_module.mod" DESTINATION  "${INSTALL_MOD_DIR}")
+install (FILES "${MODULE_DIR}/${CAMKE_INT_DIR_NAME}/json_module.mod" DESTINATION  "${INSTALL_MOD_DIR}")
 
 #------------------------------------------
 # Add portable unistall command to makefile
