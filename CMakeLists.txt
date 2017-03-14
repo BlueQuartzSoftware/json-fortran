@@ -132,10 +132,10 @@ if("${BUILD_SHARED_LIBS}" STREQUAL "ON")
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
     Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR} )
 else()
-  add_library ( ${LIB_NAME}-static STATIC ${JF_LIB_SRCS} )
-  set_target_properties ( ${LIB_NAME}-static
+  add_library ( ${LIB_NAME} STATIC ${JF_LIB_SRCS} )
+  set_target_properties ( ${LIB_NAME}
   PROPERTIES
-  OUTPUT_NAME ${LIB_NAME}-static
+  OUTPUT_NAME ${LIB_NAME}
   PREFIX lib
   VERSION ${VERSION}
   ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
@@ -334,7 +334,7 @@ if(BUILD_SHARED_LIBS)
     LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
     ARCHIVE DESTINATION "${INSTALL_LIB_DIR}" )
 else()
-  install ( TARGETS  ${LIB_NAME}-static
+  install ( TARGETS  ${LIB_NAME}
     EXPORT ${PACKAGE_NAME}-targets
     LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
     ARCHIVE DESTINATION "${INSTALL_LIB_DIR}" )
@@ -389,7 +389,7 @@ install ( FILES
 if(BUILD_SHARED_LIBS)
   export ( TARGETS ${LIB_NAME} FILE ${PACKAGE_NAME}-targets.cmake )
 else()
-  export ( TARGETS ${LIB_NAME}-static FILE ${PACKAGE_NAME}-targets.cmake )
+  export ( TARGETS ${LIB_NAME} FILE ${PACKAGE_NAME}-targets.cmake )
 endif()
 
 # build tree package config file, NOT installed
