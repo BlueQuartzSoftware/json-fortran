@@ -121,23 +121,28 @@ endif ()
 #---------------------------------------------
 
 set ( LIB_NAME ${CMAKE_PROJECT_NAME} )
-add_library ( ${LIB_NAME}        SHARED ${JF_LIB_SRCS} )
-add_library ( ${LIB_NAME}-static STATIC ${JF_LIB_SRCS} )
-set_target_properties ( ${LIB_NAME}-static
+if("${BUILD_SHARED_LIBS}" STREQUAL "ON")
+  add_library ( ${LIB_NAME}        SHARED ${JF_LIB_SRCS} )
+  set_target_properties ( ${LIB_NAME}
+    PROPERTIES
+    OUTPUT_NAME ${LIB_NAME}
+    PREFIX lib
+    SOVERSION ${VERSION_MAJOR}.${VERSION_MINOR}
+    VERSION ${VERSION}
+    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
+    Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR} )
+else()
+  add_library ( ${LIB_NAME}-static STATIC ${JF_LIB_SRCS} )
+  set_target_properties ( ${LIB_NAME}-static
   PROPERTIES
-  OUTPUT_NAME ${LIB_NAME}
+  OUTPUT_NAME ${LIB_NAME}-static
   PREFIX lib
   VERSION ${VERSION}
   ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
   Fortran_MODULE_DIRECTORY ${MODULE_DIR} )
-set_target_properties ( ${LIB_NAME}
-  PROPERTIES
-  OUTPUT_NAME ${LIB_NAME}
-  PREFIX lib
-  SOVERSION ${VERSION_MAJOR}.${VERSION_MINOR}
-  VERSION ${VERSION}
-  LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
-  Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR} )
+endif()
+
+
 
 #-------------------------------------
 # Build the documentation with FORD
@@ -323,10 +328,19 @@ endif ()
 # Perform the installation
 #-------------------------
 
-install ( TARGETS ${LIB_NAME} ${LIB_NAME}-static
-  EXPORT ${PACKAGE_NAME}-targets
-  LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
-  ARCHIVE DESTINATION "${INSTALL_LIB_DIR}" )
+if(BUILD_SHARED_LIBS)
+  install ( TARGETS ${LIB_NAME}
+    EXPORT ${PACKAGE_NAME}-targets
+    LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
+    ARCHIVE DESTINATION "${INSTALL_LIB_DIR}" )
+else()
+  install ( TARGETS  ${LIB_NAME}-static
+    EXPORT ${PACKAGE_NAME}-targets
+    LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
+    ARCHIVE DESTINATION "${INSTALL_LIB_DIR}" )
+endif()
+
+
 
 # Code to  fix the dylib install name on Mac.
 include ( cmake/fixupInstallNameDir.cmake )
@@ -372,7 +386,11 @@ install ( FILES
 #----------------------------------------------
 # Make build tree targets accessible for import
 #----------------------------------------------
-export ( TARGETS ${LIB_NAME} ${LIB_NAME}-static FILE ${PACKAGE_NAME}-targets.cmake )
+if(BUILD_SHARED_LIBS)
+  export ( TARGETS ${LIB_NAME} FILE ${PACKAGE_NAME}-targets.cmake )
+else()
+  export ( TARGETS ${LIB_NAME}-static FILE ${PACKAGE_NAME}-targets.cmake )
+endif()
 
 # build tree package config file, NOT installed
 configure_file (
