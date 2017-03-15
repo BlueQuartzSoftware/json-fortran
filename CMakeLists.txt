@@ -53,6 +53,7 @@ set ( JF_TEST_UCS4_SUPPORT_SRC "${CMAKE_SOURCE_DIR}/src/tests/introspection/test
 # directory to ease installation issues
 #-----------------------------------------
 set ( MODULE_DIR "${CMAKE_BINARY_DIR}/include" )
+set (CMAKE_Fortran_MODULE_DIRECTORY "${CMAKE_BINARY_DIR}/include")
 
 #-------------------------------------
 # Define where our files get installed
@@ -348,7 +349,7 @@ endif()
 include ( cmake/fixupInstallNameDir.cmake )
 
 #install ( DIRECTORY "${MODULE_DIR}/" DESTINATION  "${INSTALL_MOD_DIR}" )
-install (FILES "${MODULE_DIR}/${CAMKE_INT_DIR_NAME}/json_module.mod" DESTINATION  "${INSTALL_MOD_DIR}")
+install (FILES "${MODULE_DIR}/\${CMAKE_INSTALL_CONFIG_NAME}/json_module.mod" DESTINATION  "${INSTALL_MOD_DIR}")
 
 #------------------------------------------
 # Add portable unistall command to makefile
