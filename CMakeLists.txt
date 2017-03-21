@@ -348,8 +348,11 @@ endif()
 # Code to  fix the dylib install name on Mac.
 include ( cmake/fixupInstallNameDir.cmake )
 
-#install ( DIRECTORY "${MODULE_DIR}/" DESTINATION  "${INSTALL_MOD_DIR}" )
-install (FILES "${MODULE_DIR}/\${CMAKE_INSTALL_CONFIG_NAME}/json_module.mod" DESTINATION  "${INSTALL_MOD_DIR}")
+IF(NOT MSVC_IDE)
+  install ( DIRECTORY "${MODULE_DIR}/" DESTINATION  "${INSTALL_MOD_DIR}" )
+else()
+  install (FILES "${MODULE_DIR}/\${CMAKE_INSTALL_CONFIG_NAME}/json_module.mod" DESTINATION  "${INSTALL_MOD_DIR}")
+endif()
 
 #------------------------------------------
 # Add portable unistall command to makefile
