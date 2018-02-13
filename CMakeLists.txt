@@ -120,7 +120,7 @@ endif ()
 #---------------------------------------------
 # Build a shared and static library by default
 #---------------------------------------------
-
+set ( DEBUG_EXTENSION "_debug" )
 set ( LIB_NAME ${CMAKE_PROJECT_NAME} )
 if("${BUILD_SHARED_LIBS}" STREQUAL "ON")
   add_library ( ${LIB_NAME}        SHARED ${JF_LIB_SRCS} )
@@ -132,7 +132,8 @@ if("${BUILD_SHARED_LIBS}" STREQUAL "ON")
     VERSION ${VERSION}
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
     Fortran_MODULE_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR} 
-    Fortran_MODULE_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR} )
+    Fortran_MODULE_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}
+    DEBUG_POSTFIX ${DEBUG_EXTENSION} )
 else()
   add_library ( ${LIB_NAME} STATIC ${JF_LIB_SRCS} )
   set_target_properties ( ${LIB_NAME}
@@ -142,10 +143,9 @@ else()
     VERSION ${VERSION}
     ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
     Fortran_MODULE_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR} 
-    Fortran_MODULE_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR} )
+    Fortran_MODULE_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}
+    DEBUG_POSTFIX ${DEBUG_EXTENSION} )
 endif()
-
-
 
 #-------------------------------------
 # Build the documentation with FORD
