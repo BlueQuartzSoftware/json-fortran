@@ -117,6 +117,12 @@ if ( ENABLE_UNICODE )
   endif ()
 endif ()
 
+# --------------------------------------------------------------------
+# On Linux we need -fPIC for linking static and shared libraries
+if(UNIX AND NOT APPLE)
+  set_source_files_properties(${JF_LIB_SRCS} PROPERTIES COMPILE_FLAGS -fPIC)
+endif()
+
 #---------------------------------------------
 # Build a shared and static library by default
 #---------------------------------------------
@@ -133,7 +139,8 @@ if("${BUILD_SHARED_LIBS}" STREQUAL "ON")
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
     Fortran_MODULE_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR} 
     Fortran_MODULE_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}
-    DEBUG_POSTFIX ${DEBUG_EXTENSION} )
+    DEBUG_POSTFIX ${DEBUG_EXTENSION}
+    )
 else()
   add_library ( ${LIB_NAME} STATIC ${JF_LIB_SRCS} )
   set_target_properties ( ${LIB_NAME}
@@ -144,7 +151,8 @@ else()
     ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
     Fortran_MODULE_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR} 
     Fortran_MODULE_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}
-    DEBUG_POSTFIX ${DEBUG_EXTENSION} )
+    DEBUG_POSTFIX ${DEBUG_EXTENSION}
+    )
 endif()
 
 #-------------------------------------
